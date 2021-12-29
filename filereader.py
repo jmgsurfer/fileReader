@@ -1,35 +1,12 @@
 import string
-import itertools
 
-def istext(filename):
-    a = []
-    s=open(filename).read(512)
-    for b in range(32, 127):
-        a.append(chr(b))
-    a.append('\n\r\t\b')
-    text_characters = "".join(a)
-    _null_trans = maketrans("", "")
-    if not s:
-        # Empty files are considered text
-        return True
-    if "\0" in s:
-        # Files with null bytes are likely binary
-        return False
-    # Get the non-text characters (maps a character to itself then
-    # use the 'remove' option to get rid of the text characters.)
-    t = s.translate(_null_trans, text_characters)
-    # If more than 30% non-text characters, then
-    # this is considered a binary file
-    if float(len(t))/float(len(s)) > 0.30:
-        return False
-    return True
+textchars = bytearray({7,8,9,10,12,13,27} | set(range(0x20, 0x100)) - {0x7f})
+is_binary_string = lambda bytes: bool(bytes.translate(None, textchars))
 
-if not istext('file.jfif'):
-    with open("file.jfif", "rb") as f:
-        byte = f.read(1)
-        while byte:
-            byte = f.read(1)
-            print(byte)
+if is_binary_string(open('test.exe', 'rb').read(1024)):
+    with open("test.exe", "rb") as f:
+        byte = f.read(4)
+        print(byte)
 
 else:
     print("text")
