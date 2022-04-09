@@ -3,7 +3,7 @@ import binascii
 import json
 #
 # [X] Add error handle (ie: not in db.json)
-# [ ] Add function ading new magic number to db.json
+# [ ] Add function adding new magic number to db.json
 #  
 # magic number search url: https://filesignatures.net/
 #
@@ -13,6 +13,17 @@ import json
 #     json.dump(mn_json, mn_database)
 #
 # get json db file and convert into dict
+#
+def usage():
+    print("Usage:\n")
+
+if (len(sys.argv) == 1):
+    usage()
+    exit()
+
+def usage():
+    print("Usage:\n")
+    
 with open('mn_db.json') as magic_numbers_db_json:
     magic_numbers_db = json.load(magic_numbers_db_json) # It is typed string
     magic_numbers = json.loads(magic_numbers_db) # convert str to dict
