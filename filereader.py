@@ -3,6 +3,7 @@ import binascii
 import json
 #
 # [X] Add error handle (ie: not in db.json)
+# [ ] Prepare csv magic_numbers.db.csv file
 # [ ] Add function adding new magic number to db.json
 #  
 # magic number search url: https://filesignatures.net/
@@ -50,3 +51,5 @@ if is_binary_string(open(sys.argv[1], 'rb').read(1024)):
             else:
                 exit()
 
+else:
+	print("text file")
