@@ -18,35 +18,41 @@ import json
 def usage():
     print("Usage:\n")
 
+def isBinary(bytes):
+    textchars = bytearray({7,8,9,10,12,13,27} | set(range(0x20, 0x100)) - {0x7f})
+    return bool(bytes.translate(None, textchars))
+
+def getMagic(magic_number):
+    with open('mn_db.csv','r') as file:
+        for line in file:
+            a = line.split(';')
+            print(magic_number)
+            print(a)
+            if a[0] == magic_number:
+                return a[1]
+            else:
+                return "ko"
+
+####
+
 if (len(sys.argv) == 1):
     usage()
     exit()
-
-with open('mn_db.json') as magic_numbers_db_json:
-    magic_numbers_db = json.load(magic_numbers_db_json) # It is typed string
-    magic_numbers = json.loads(magic_numbers_db) # convert str to dict
 #
-# check if binary
-textchars = bytearray({7,8,9,10,12,13,27} | set(range(0x20, 0x100)) - {0x7f})
-is_binary_string = lambda bytes: bool(bytes.translate(None, textchars))
+# Get first 1024 bytes and first 4 bytes
 #
+with open(sys.argv[1], 'rb') as file:
+    oneK = file.read(1024)
+    file.seek(0)
+    fourB = file.read(4)
 #
-if is_binary_string(open(sys.argv[1], 'rb').read(1024)):
-    with open(sys.argv[1], "rb") as f:
-        byte = f.read(4)
-        data = binascii.hexlify(byte, ' ').decode('ascii')
-        print("Magic number of ", sys.argv[1], " is:")
-        try:
-            print(data, ": ", magic_numbers[data], "\n")
-        except:
-            print(data)
-
-            if input("Add this magic number to db.json? (o/n)") == "o":
-                description = input("Description: ")
-                magic_numbers[data] = description
-                print(magic_numbers)
-            else:
-                exit()
-
+# Check if file is binary
+if isBinary(oneK):
+    data = binascii.hexlify(fourB, ' ').decode('ascii')
+    print("Magic number of", sys.argv[1], "is:")
+    try:
+        print(data, ": ", getMagic(data), "\n")
+    except:
+        print(data)
 else:
 	print("text file")

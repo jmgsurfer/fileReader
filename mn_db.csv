@@ -1,2 +1,3 @@
-"Magic number";"file type"
-"4d 5a 90 00";"Binary: MZ, Windows executable file."
+Magic number;file type
+4d 5a 90 00;Binary: MZ, Windows executable file.
+
