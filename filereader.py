@@ -2,10 +2,9 @@ import sys
 import binascii
 import json
 #
-# [X] Add error handle (ie: not in db.json)
-# [ ] Prepare csv magic_numbers.db.csv file
-# [ ] Add function adding new magic number to db.json
-#  
+# [X] Add function adding new magic number to db.csv
+# [ ] FInd logic to get data to send to addMagic function
+#
 # magic number search url: https://filesignatures.net/
 #
 # magic_numbers = { "4d 5a 90 00":"Binary: MZ, Windows executable file.", "47 49 46 38":"Binary: GIF file"}
@@ -26,12 +25,16 @@ def getMagic(magic_number):
     with open('mn_db.csv','r') as file:
         for line in file:
             a = line.split(';')
-            print(magic_number)
-            print(a)
             if a[0] == magic_number:
                 return a[1]
-            else:
-                return "ko"
+                break
+        
+        return "Magic number not in local database."
+
+def addMagic(magic_number, description):
+    with open('mn_db.csv','a+') as file:
+        data = magic_number + ";" + description
+        file.write(data)
 
 ####
 
@@ -53,6 +56,6 @@ if isBinary(oneK):
     try:
         print(data, ": ", getMagic(data), "\n")
     except:
-        print(data)
+        print("An error occured while attempting to identify this magic number:",data)
 else:
-	print("text file")
+	print(sys.argv[1], "is a text file.")
