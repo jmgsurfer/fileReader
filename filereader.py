@@ -27,8 +27,6 @@ def getMagic(magic_number):
             a = line.split(';')
             if a[0] == magic_number:
                 return a[1]
-                break
-        
         return "Magic number not in local database."
 
 def addMagic(magic_number, description):
@@ -54,7 +52,13 @@ if isBinary(oneK):
     data = binascii.hexlify(fourB, ' ').decode('ascii')
     print("Magic number of", sys.argv[1], "is:")
     try:
-        print(data, ": ", getMagic(data), "\n")
+        mn = getMagic(data)
+        print(data, ": ", mn, "\n")
+        if mn == "Magic number not in local database.":
+            if input('Do you want to add this magic number description in local database? (o/n): ') == "o":
+                description = input('What is the description? ')
+                addMagic(data, description)
+
     except:
         print("An error occured while attempting to identify this magic number:",data)
 else:
