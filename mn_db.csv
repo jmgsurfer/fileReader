@@ -1,3 +1,4 @@
 Magic number;file type
-4d 5a 90 00;Binary: MZ, Windows executable file.
-50 4b 03 04;Binary: PK, Zip file format and formats based on it, such as EPUB, JAR, ODF, OOXML
+4d 5a 90 00;exe,sys,..: MZ, Windows executable file.
+50 4b 03 04;zip,apk,epub,...: PK, Zip file format and formats based on it, such as EPUB, JAR, ODF, OOXML
+7f 45 4c 46;no extension: ELF, Executable and Linkable Format (Linux)
